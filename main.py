@@ -19,7 +19,7 @@ def auto_shotdown_pc() -> None:
         if choice.lower() == "/start":
 
             cls()
-            size_file = int(input("Введите размер скачиваемого файла в гигабайтах: "))
+            size_file = float(input("Введите размер скачиваемого файла в гигабайтах: "))
             
             cls()
 
