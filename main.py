@@ -11,15 +11,36 @@ def auto_shotdown_pc() -> None:
                 
                 return round(bytes * 1000, 2)
 
+    disks = ps.disk_partitions()
+
+    before_free_memories = []
+
+    for disk in disks:
+        partition_usage = ps.disk_usage(disk.mountpoint)
+
+        before_free_memories.append(partition_usage.free)
+
+    after_free_memories = []
+
     while True:
+        
         print("Введите команду '/start' после того как начнете загрузку файла.\n")
 
         choice = input("Ввод: ")
         
         if choice.lower() == "/start":
 
-            cls()
-            size_file = float(input("Введите размер скачиваемого файла в гигабайтах: "))
+            for disk in disks:
+                partition_usage = ps.disk_usage(disk.mountpoint)
+
+                after_free_memories.append(partition_usage.free)
+
+            difference = []
+
+            for before, after in zip(before_free_memories, after_free_memories):
+                difference.append(after - before)
+
+            size_file = bytes_to_mb(max(map(abs, difference)))
             
             cls()
 
@@ -36,7 +57,7 @@ def auto_shotdown_pc() -> None:
                     cls()
                     print("Ожидание завершения записи файла на диск...")
 
-                    t.sleep((size_file * 1000) // 70)
+                    t.sleep(size_file // 70)
 
                     cls()
                     print("Выключение компьютера.")
@@ -54,6 +75,7 @@ def auto_shotdown_pc() -> None:
             continue
 
 def main():
+
     auto_shotdown_pc()
 
 if __name__ == "__main__":
