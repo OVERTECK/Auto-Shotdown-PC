@@ -41,8 +41,9 @@ def auto_shotdown_pc() -> None:
                     cls()
                     print("Выключение компьютера.")
 
-                    # os.system("shutdown -s -t 10")
-                    break
+                    os.system("shutdown -s -t 10")
+                    
+                    return
                 
                 temp_send_bytes = bytes_to_mb(net_io.bytes_recv)
                 t.sleep(5)
